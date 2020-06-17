@@ -20,6 +20,7 @@ import me.gorgeousone.netherview.handlers.PortalHandler;
 import me.gorgeousone.netherview.handlers.ViewHandler;
 import me.gorgeousone.netherview.portal.Portal;
 import me.gorgeousone.netherview.threedstuff.BlockVec;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -36,6 +37,7 @@ import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
@@ -203,6 +205,15 @@ public class BlockListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
+	public void onBlockPhysic(BlockPhysicsEvent event) {
+		
+		if (event.getChangedType() == portalMaterial) {
+			Bukkit.broadcastMessage("portal");
+		}
+	}
+	
+	
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onBlockInteract(PlayerInteractEvent event) {
 		
 		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
@@ -270,7 +281,7 @@ public class BlockListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onBlockExplode(EntityExplodeEvent event) {
+	public void onEntityExplode(EntityExplodeEvent event) {
 		
 		for (Block block : event.blockList()) {
 			if (block.getType() == portalMaterial) {

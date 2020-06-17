@@ -16,12 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 public class TeleportListener implements Listener {
 	
@@ -29,7 +24,7 @@ public class TeleportListener implements Listener {
 	private PortalHandler portalHandler;
 	private ViewHandler viewHandler;
 	
-	private HashMap<UUID, Location> portalTravellingEntities;
+//	private HashMap<UUID, Location> portalTravellingEntities;
 	
 	public TeleportListener(NetherView main,
 	                        PortalHandler portalHandler,
@@ -39,26 +34,26 @@ public class TeleportListener implements Listener {
 		this.portalHandler = portalHandler;
 		this.viewHandler = viewHandler;
 		
-		portalTravellingEntities = new HashMap<>();
+//		portalTravellingEntities = new HashMap<>();
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onEntityDisappear(EntityPortalEvent event) {
-		Entity entity = event.getEntity();
-		portalTravellingEntities.put(entity.getUniqueId(), entity.getLocation());
-	}
-	
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onEntityReappear(EntitySpawnEvent event) {
-		
-		Entity entity = event.getEntity();
-		UUID entityID = entity.getUniqueId();
-		
-		if (portalTravellingEntities.containsKey(entityID)) {
-			createPortalView(portalTravellingEntities.get(entityID), entity.getLocation(), entity);
-			portalTravellingEntities.remove(entityID);
-		}
-	}
+//	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+//	public void onEntityDisappear(EntityPortalEvent event) {
+//		Entity entity = event.getEntity();
+//		portalTravellingEntities.put(entity.getUniqueId(), entity.getLocation());
+//	}
+//
+//	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+//	public void onEntityReappear(EntitySpawnEvent event) {
+//
+//		Entity entity = event.getEntity();
+//		UUID entityID = entity.getUniqueId();
+//
+//		if (portalTravellingEntities.containsKey(entityID)) {
+//			createPortalView(portalTravellingEntities.get(entityID), entity.getLocation(), entity);
+//			portalTravellingEntities.remove(entityID);
+//		}
+//	}
 	
 	//I did not use the PlayerPortalEvent because it only give information about where the player should theoretically perfectly teleport to
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -122,6 +117,7 @@ public class TeleportListener implements Listener {
 		Block counterPortalBlock = PortalLocator.getNearbyPortalBlock(to);
 		
 		if (counterPortalBlock == null) {
+			
 			if (main.debugMessagesEnabled()) {
 				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[Debug] No portal found at destination point " + new BlockVec(to).toString());
 			}
